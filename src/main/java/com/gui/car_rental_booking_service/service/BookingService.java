@@ -56,16 +56,20 @@ public class BookingService {
     @KafkaHandler
     public Booking consumeBookingCreationCommand(BookingCreationCommand command){
 
+        logger.info("Received BookingCreationCommand: {}", command);
         try {
             Booking booking = new Booking();
             booking.setCarId(command.getBookingDto().getCarId());
             booking.setRentalStartDate(command.getBookingDto().getRentalStartDate());
             booking.setRentalEndDate(command.getBookingDto().getRentalEndDate());
             booking.setBookingStatus(BookingStatus.PENDING);
-            booking.calculateTotalPrice(command.getPricePerDay());
-            booking.setCarId(null);
+            booking.calculateTotalPrice(command.getBookingDto().getPricePerDay());
+            booking.setUserId(command.getBookingDto().getUserId());
+            //just for testing failure
+            //booking.setCarId(null);
             Booking savedBooking = bookingRepository.save(booking);
-
+            command.getBookingDto().setAmount(booking.getTotalPrice());
+            command.getBookingDto().setBookingId(savedBooking.getBookingId());
             BookingCreatedEvent bookingCreatedEvent = new BookingCreatedEvent(
                     command.getSagaTransactionId(), command.getBookingDto());
             kafkaTemplate.send("booking-service-events", bookingCreatedEvent);
