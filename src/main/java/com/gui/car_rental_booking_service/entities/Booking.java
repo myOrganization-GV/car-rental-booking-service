@@ -23,7 +23,7 @@ public class Booking {
 
     private UUID userId;
 
-    private String userName;
+    private String userEmail;
 
     private LocalDateTime rentalStartDate;
 
@@ -44,13 +44,13 @@ public class Booking {
     public Booking() {
     }
 
-    public Booking(UUID bookingId, UUID carId, UUID userId, String userName, LocalDateTime rentalStartDate, LocalDateTime rentalEndDate,
+    public Booking(UUID bookingId, UUID carId, UUID userId, String userEmail, LocalDateTime rentalStartDate, LocalDateTime rentalEndDate,
                    BookingStatus bookingStatus,BigDecimal totalPrice, LocalDateTime createdAt,
                    LocalDateTime updatedAt) {
         this.bookingId = bookingId;
         this.carId = carId;
         this.userId = userId;
-        this.userName = userName;
+        this.userEmail = userEmail;
         this.rentalStartDate = rentalStartDate;
         this.rentalEndDate = rentalEndDate;
         this.bookingStatus = bookingStatus;
@@ -62,11 +62,6 @@ public class Booking {
     public BigDecimal getTotalPrice() {
         return totalPrice;
     }
-
-    public void setTotalPrice(BigDecimal totalPrice) {
-        this.totalPrice = totalPrice;
-    }
-
     public UUID getBookingId() {
         return bookingId;
     }
@@ -91,12 +86,12 @@ public class Booking {
         this.userId = userId;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUserEmail() {
+        return userEmail;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
     public LocalDateTime getRentalStartDate() {
@@ -138,7 +133,7 @@ public class Booking {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
-    public void calculateTotalPrice(BigDecimal pricePerDay) {
+    public void setTotalPrice(BigDecimal pricePerDay) {
         long daysBetween = ChronoUnit.DAYS.between(rentalStartDate, rentalEndDate) + 1;
         this.totalPrice = pricePerDay.multiply(BigDecimal.valueOf(daysBetween));
     }
