@@ -18,6 +18,7 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -111,9 +112,9 @@ public class BookingService {
     }
 
     private static void validateDate(BookingDto bookingDto) {
-        LocalDateTime now   = LocalDateTime.now();
-        LocalDateTime start = bookingDto.getRentalStartDate();
-        LocalDateTime end   = bookingDto.getRentalEndDate();
+        LocalDate now   = LocalDate.now();
+        LocalDate start = bookingDto.getRentalStartDate().toLocalDate();
+        LocalDate end   = bookingDto.getRentalEndDate().toLocalDate();
 
         if (start.isBefore(now.plusDays(1))) {
             throw new IllegalArgumentException(
