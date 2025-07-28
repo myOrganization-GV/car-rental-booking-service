@@ -40,7 +40,7 @@ pipeline {
                 git branch: 'main', credentialsId: 'GITHUB_LOGIN', url: 'https://github.com/myOrganization-GV/car-rental-booking-service'
             }
         }
-        stage("Build Orchestrator Application") {
+        stage("Build Booking Service Application") {
             steps {
                 sh "mvn clean package -DskipTests"
             }
@@ -75,7 +75,7 @@ pipeline {
 
                         gcloud compute ssh gui_s@${GCP_INSTANCE} \\
                         --zone=${GCP_ZONE} --quiet \\
-                        --command "cd ~/car-rental-app && docker compose pull car-rental-orchestrator && docker compose up -d --no-deps --force-recreate $APP_NAME"
+                        --command "cd ~/car-rental-app && docker compose pull car-rental-booking-service && docker compose up -d --no-deps --force-recreate $APP_NAME"
                     '''
                 }
             }
